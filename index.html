@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTAFastLane - Ultimate GTA 6 Countdown Hub</title>
+    <meta name="description" content="The ultimate GTA 6 countdown community with real-time news, predictions, and live chat. Join 12,000+ fans counting down to GTA 6!">
+    <meta name="keywords" content="GTA 6, Grand Theft Auto 6, countdown, news, leaks, theories, community">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏎️</text></svg>">
+    <style>
+        :root {
+            --primary-color: #ff6b35;
+            --secondary-color: #004e89;
+            --accent-color: #00a8cc;
+            --success-color: #2ed573;
+            --warning-color: #ffa502;
+            --danger-color: #ff4757;
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --card-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #ff8c42;
+            --secondary-color: #1a365d;
+            --accent-color: #4fd1c7;
+            --success-color: #48bb78;
+            --warning-color: #ed8936;
+            --danger-color: #f56565;
+            --text-color: #e2e8f0;
+            --bg-color: #0f1419;
+            --card-bg: #1a202c;
+            --border-color: #2d3748;
+            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 800;
+        }
+
+        .user-status {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.3);
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.5);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            background: rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        [data-theme="dark"] .theme-toggle:hover {
+            background: rgba(0,0,0,0.5);
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .countdown-item {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: pulse 2s infinite;
+            width: 100%;
+            max-width: 300px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .countdown-item:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.25);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .countdown-number {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 900;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        .live-activity {
+            background: rgba(46, 213, 115, 0.1);
+            border: 1px solid var(--success-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--success-color);
+            margin: 0.5rem 0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .xp-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffa502, #ff6b35, #ff8c42);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            animation: shimmer 2s infinite;
+            background-size: 200px 100%;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: 200px 0; }
+        }
+
+        .tabs-container {
+            background: var(--card-bg);
+            border-bottom: 2px solid var(--border-color);
+            overflow-x: auto;
+            position: sticky;
+            top: calc(120px + 1rem);
+            z-index: 90;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tabs {
+            display: flex;
+            min-width: max-content;
+            padding: 0 1rem;
+        }
+
+        .tab {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            position: relative;
+            min-width: 120px;
+        }
+
+        .tab:hover {
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--primary-color);
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .content-area {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-level {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .daily-checkin {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .daily-checkin:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .daily-checkin.claimed {
+            background: rgba(46, 213, 115, 0.1);
+            border-color: var(--success-color);
+        }
+
+        .streak-counter {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .prediction-game {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .prediction-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .prediction-option {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .prediction-option:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.02);
+        }
+
+        .prediction-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .news-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
+
+        .news-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .news-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .news-content {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .news-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .news-link:hover {
+            text-decoration: underline;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
+
+        .stat-number {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 800;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .live-chat {
+            background: var(--card-bg);
+            border-radius: 12px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+        }
+
+        .chat-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--success-color);
+            border-radius: 50%;
+            animation: pulse-online 2s infinite;
+        }
+
+        @keyframes pulse-online {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: var(--bg-color);
+        }
+
+        .chat-message {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: var(--card-bg);
+            border-left: 3px solid var(--primary-color);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .chat-username {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .chat-text {
+            margin-top: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+        }
+
+        .chat-send {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-send:hover {
+            transform: scale(1.1);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease;
+            max-width: calc(100vw - 40px);
+            font-size: 0.9rem;
+        }
+
+        .share-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .share-button:hover {
+            transform: scale(1.1);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .floating-reactions {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .floating-reaction {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatUp 3s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .error-message {
+            background: rgba(245, 101, 101, 0.1);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.75rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .user-status {
+                position: static;
+                margin-bottom: 0.5rem;
+                display: inline-block;
+            }
+
+            .countdown-container {
+                margin: 0.75rem 0;
+                padding: 0 1rem;
+            }
+
+            .countdown-item {
+                padding: 1.25rem 1.5rem;
+            }
+
+            .live-chat {
+                height: 300px;
+            }
+
+            .tabs-container {
+                top: 100px;
+            }
+
+            .tab {
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
+                min-width: 100px;
+            }
+
+            .content-area {
+                padding: 0.75rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .prediction-options {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .stat-card {
+                padding: 1rem 0.75rem;
+            }
+
+            .share-button {
+                bottom: 15px;
+                right: 15px;
+                padding: 10px 16px;
+                font-size: 0.8rem;
+            }
+
+            .notification {
+                top: 15px;
+                right: 15px;
+                left: 15px;
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tabs {
+                padding: 0 0.5rem;
+            }
+
+            .tab {
+                min-width: 80px;
+                padding: 0.75rem 0.75rem;
+            }
+
+            .content-area {
+                padding: 0.5rem;
+            }
+
+            .countdown-item {
+                padding: 1rem 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+        <div class="user-status" id="userStatus">
+            Level 1 Insider | XP: <span id="userXP">120</span>/500
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+        <h1>🏎️ GTAFastLane</h1>
+        <div class="live-activity" id="liveActivity">
+            🔴 LIVE: 247 fans online | 15 new theories today
+        </div>
+        <div class="countdown-container">
+            <div class="countdown-item" onclick="triggerCountdownReaction()">
+                <span class="countdown-number" id="days">277</span>
+                <div class="countdown-label">Days Until GTA 6</div>
+            </div>
+        </div>
+        <div class="xp-bar">
+            <div class="xp-fill" id="xpFill" style="width: 24%"></div>
+        </div>
+    </header>
+
+    <div class="tabs-container">
+        <nav class="tabs">
+            <button class="tab active" onclick="showTab('youtube')" data-tab="youtube">📺 YouTube</button>
+            <button class="tab" onclick="showTab('news')" data-tab="news">📰 News</button>
+            <button class="tab" onclick="showTab('community')" data-tab="community">🏆 Community</button>
+            <button class="tab" onclick="showTab('theories')" data-tab="theories">🧠 Theories</button>
+            <button class="tab" onclick="showTab('chat')" data-tab="chat">💬 Chat</button>
+            <button class="tab" onclick="showTab('leaderboard')" data-tab="leaderboard">📊 Leaders</button>
+        </nav>
+    </div>
+
+    <main class="content-area">
+        <!-- YouTube Tab -->
+        <div id="youtube" class="tab-content active">
+            <h2 class="section-title">📺 Latest YouTube Coverage</h2>
+            <div class="loading" id="youtube-loading">Loading latest YouTube videos...</div>
+            <div class="news-grid" id="youtube-content"></div>
+        </div>
+
+        <!-- News Tab -->
+        <div id="news" class="tab-content">
+            <h2 class="section-title">📰 Breaking News</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="newsCount">0</span>
+                    <div class="stat-label">Articles Today</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="sourcesCount">0</span>
+                    <div class="stat-label">News Sources</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">277</span>
+                    <div class="stat-label">Days Left</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="onlineUsers">247</span>
+                    <div class="stat-label">Online Now</div>
+                </div>
+            </div>
+            <div class="loading" id="news-loading">Loading latest news...</div>
+            <div class="news-grid" id="news-content"></div>
+        </div>
+
+        <!-- Community Tab -->
+        <div id="community" class="tab-content">
+            <h2 class="section-title">
+                🏆 Community Hub
+                <span class="user-level" id="userLevel">Insider</span>
+            </h2>
+            
+            <div class="daily-checkin" id="dailyCheckin" onclick="claimDailyReward()">
+                <div class="streak-counter" id="streakCounter">🔥 7</div>
+                <h3>Daily Check-in</h3>
+                <p>Claim your daily XP and keep your streak alive!</p>
+                <small>+50 XP • Streak Bonus: +35 XP</small>
+            </div>
+
+            <div class="prediction-game">
+                <h3>🎯 Weekly Prediction: GTA 6 Map Size</h3>
+                <p>How big will the GTA 6 map be compared to GTA 5?</p>
+                <div class="prediction-options">
+                    <div class="prediction-option" onclick="selectPrediction(this, 'smaller')">
+                        <strong>Smaller but Denser</strong>
+                        <small>Focus on quality over quantity</small>
+                    </div>
+                    <div class="prediction-option" onclick="selectPrediction(this, 'similar')">
+                        <strong>Similar Size</strong>
+                        <small>Same scope, better detail</small>
+                    </div>
+                    <div class="prediction-option" onclick="selectPrediction(this, 'larger')">
+                        <strong>2x Larger</strong>
+                        <small>Massive open world experience</small>
+                    </div>
+                    <div class="prediction-option" onclick="selectPrediction(this, 'huge')">
+                        <strong>5x Larger</strong>
+                        <small>Revolutionary scale</small>
+                    </div>
+                </div>
+                <button onclick="submitPrediction()" class="share-button" style="position: static; border-radius: 8px; width: 100%; margin-top: 1rem;">
+                    Submit Prediction (+25 XP)
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalUsers">12,847</span>
+                    <div class="stat-label">FastLane Members</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="predictionsToday">89</span>
+                    <div class="stat-label">Predictions Today</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="theoriesToday">15</span>
+                    <div class="stat-label">Theories Posted</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="userRank">847</span>
+                    <div class="stat-label">Your Rank</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Theories Tab -->
+        <div id="theories" class="tab-content">
+            <h2 class="section-title">🧠 Community Theories</h2>
+            <div class="loading" id="theories-loading">Loading community discussions...</div>
+            <div class="news-grid" id="theories-content"></div>
+        </div>
+
+        <!-- Chat Tab -->
+        <div id="chat" class="tab-content">
+            <h2 class="section-title">💬 FastLane Live Chat</h2>
+            
+            <div class="live-chat">
+                <div class="chat-header">
+                    <div class="online-indicator"></div>
+                    <span>Live Chat</span>
+                    <span style="margin-left: auto; font-size: 0.8rem;" id="chatOnlineCount">247 online</span>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message">
+                        <div class="chat-username">ViceCityKing</div>
+                        <div class="chat-text">Anyone else think the leaked footage looks too good to be true? 🤔</div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="chat-username">GTAMaster99</div>
+                        <div class="chat-text">The physics engine improvements are insane! Can't wait! 🚗💨</div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="chat-username">TheoryExpert</div>
+                        <div class="chat-text">I'm calling it now - multiple time periods confirmed! 📅</div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." maxlength="200" onkeypress="handleChatKeyPress(event)">
+                    <button class="chat-send" onclick="sendMessage()">➤</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="chatMessages">15,847</span>
+                    <div class="stat-label">Messages Today</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="activeChatter">89</span>
+                    <div class="stat-label">Active Chatters</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="yourMessages">23</span>
+                    <div class="stat-label">Your Messages</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="chatLevel">12</span>
+                    <div class="stat-label">Chat Level</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Tab -->
+        <div id="leaderboard" class="tab-content">
+            <h2 class="section-title">📊 FastLane Leaderboards</h2>
+            
+            <div class="prediction-game">
+                <h3>🏆 Top Predictors (This Month)</h3>
+                <div class="news-grid">
+                    <div class="news-item">
+                        <div class="news-title">#1 PredictionKing</div>
+                        <div class="news-meta">
+                            <span>94% accuracy</span>
+                            <span>•</span>
+                            <span>47 predictions</span>
+                            <span>•</span>
+                            <span>2,847 XP</span>
+                        </div>
+                        <div class="news-content">Legendary status member with incredible prediction accuracy.</div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">#2 TheoryExpert</div>
+                        <div class="news-meta">
+                            <span>89% accuracy</span>
+                            <span>•</span>
+                            <span>62 predictions</span>
+                            <span>•</span>
+                            <span>2,534 XP</span>
+                        </div>
+                        <div class="news-content">Expert level theorist with deep GTA series knowledge.</div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">#15 You</div>
+                        <div class="news-meta">
+                            <span>72% accuracy</span>
+                            <span>•</span>
+                            <span>12 predictions</span>
+                            <span>•</span>
+                            <span>456 XP</span>
+                        </div>
+                        <div class="news-content">Keep climbing the ranks! Great progress this month.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">12,847</span>
+                    <div class="stat-label">Total Members</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">89,234</span>
+                    <div class="stat-label">Predictions Made</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">15,678</span>
+                    <div class="stat-label">Theories Posted</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">247,891</span>
+                    <div class="stat-label">XP Earned Today</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="notification" id="notification">
+        🔥 Welcome to GTAFastLane!
+    </div>
+
+    <div class="floating-reactions" id="floatingReactions"></div>
+
+    <button class="share-button" onclick="shareWebsite()">
+        🚀 Share FastLane!
+    </button>
+
+    <script>
+// ===========================================
+        // API CONFIGURATION - REPLACE WITH YOUR KEYS
+        // ===========================================
+        const API_CONFIG = {
+            // Get free YouTube API key: https://console.cloud.google.com
+            youtube: 'YOUR_YOUTUBE_API_KEY_HERE',
+            
+            // Get free News API key: https://newsapi.org/register  
+            news: 'YOUR_NEWS_API_KEY_HERE',
+            
+            // Reddit doesn't need API key for public posts
+            reddit: true
+        };
+
+        // ===========================================
+        // GLOBAL VARIABLES
+        // ===========================================
+        const today = new Date();
+        const releaseDate = new Date(today.getTime() + (277 * 24 * 60 * 60 * 1000)).getTime();
+        
+        let currentTheme = localStorage.getItem('gtafastlane-theme') || 'light';
+        let activeTab = 'youtube';
+        let userXP = parseInt(localStorage.getItem('gtafastlane-xp')) || 120;
+        let userLevel = localStorage.getItem('gtafastlane-level') || 'Insider';
+        let dailyStreak = parseInt(localStorage.getItem('gtafastlane-streak')) || 7;
+        let lastCheckin = localStorage.getItem('gtafastlane-last-checkin');
+        let selectedPrediction = null;
+
+        // ===========================================
+        // REAL API DATA FETCHERS
+        // ===========================================
+
+        // Fetch Real YouTube Videos
+        async function fetchRealYouTubeVideos() {
+            const loadingElement = document.getElementById('youtube-loading');
+            const contentElement = document.getElementById('youtube-content');
+            
+            try {
+                if (API_CONFIG.youtube === 'YOUR_YOUTUBE_API_KEY_HERE') {
+                    throw new Error('API key not configured');
+                }
+
+                const response = await fetch(
+                    `https://www.googleapis.com/youtube/v3/search?part=snippet&q=GTA+6+leak+news+2025&type=video&order=date&maxResults=12&key=${API_CONFIG.youtube}`
+                );
+                
+                if (!response.ok) throw new Error('YouTube API error');
+                
+                const data = await response.json();
+                loadingElement.style.display = 'none';
+                contentElement.innerHTML = '';
+                
+                data.items.forEach(video => {
+                    const videoElement = document.createElement('div');
+                    videoElement.className = 'news-item';
+                    videoElement.innerHTML = `
+                        <div class="news-title">🔥 ${video.snippet.title}</div>
+                        <div class="news-meta">
+                            <span>${video.snippet.channelTitle}</span>
+                            <span>•</span>
+                            <span>${new Date(video.snippet.publishedAt).toLocaleDateString()}</span>
+                        </div>
+                        <div class="news-content">${video.snippet.description.substring(0, 150)}...</div>
+                        <a href="https://youtube.com/watch?v=${video.id.videoId}" target="_blank" class="news-link">
+                            Watch Video →
+                        </a>
+                    `;
+                    contentElement.appendChild(videoElement);
+                });
+                
+                showNotification('✅ Real YouTube videos loaded!');
+                
+            } catch (error) {
+                console.log('YouTube API error:', error);
+                loadingElement.style.display = 'none';
+                contentElement.innerHTML = `
+                    <div class="error-message">
+                        <strong>🔧 Setup Required:</strong> Add your YouTube API key to see real videos!<br>
+                        <small>Get free API key at: <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a></small>
+                    </div>
+                `;
+                showDemoYouTubeContent();
+            }
+        }
+
+        // Fetch Real News Articles
+        async function fetchRealNews() {
+            const loadingElement = document.getElementById('news-loading');
+            const contentElement = document.getElementById('news-content');
+            
+            try {
+                if (API_CONFIG.news === 'YOUR_NEWS_API_KEY_HERE') {
+                    throw new Error('API key not configured');
+                }
+
+                const response = await fetch(
+                    `https://newsapi.org/v2/everything?q=GTA+6+OR+"Grand+Theft+Auto+6"&sortBy=publishedAt&pageSize=15&apiKey=${API_CONFIG.news}`
+                );
+                
+                if (!response.ok) throw new Error('News API error');
+                
+                const data = await response.json();
+                loadingElement.style.display = 'none';
+                contentElement.innerHTML = '';
+                
+                document.getElementById('newsCount').textContent = data.articles.length;
+                const sources = new Set(data.articles.map(a => a.source.name));
+                document.getElementById('sourcesCount').textContent = sources.size;
+                
+                data.articles.forEach(article => {
+                    const newsElement = document.createElement('div');
+                    newsElement.className = 'news-item';
+                    newsElement.innerHTML = `
+                        <div class="news-title">${article.title}</div>
+                        <div class="news-meta">
+                            <span>${article.source.name}</span>
+                            <span>•</span>
+                            <span>${new Date(article.publishedAt).toLocaleDateString()}</span>
+                        </div>
+                        <div class="news-content">${article.description || 'No description available'}</div>
+                        <a href="${article.url}" target="_blank" class="news-link">
+                            Read Full Article →
+                        </a>
+                    `;
+                    contentElement.appendChild(newsElement);
+                });
+                
+                showNotification('📰 Real news articles loaded!');
+                
+            } catch (error) {
+                console.log('News API error:', error);
+                loadingElement.style.display = 'none';
+                contentElement.innerHTML = `
+                    <div class="error-message">
+                        <strong>🔧 Setup Required:</strong> Add your News API key to see real articles!<br>
+                        <small>Get free API key at: <a href="https://newsapi.org/register" target="_blank">NewsAPI.org</a></small>
+                    </div>
+                `;
+                showDemoNewsContent();
+            }
+        }
+
+        // Fetch Real Reddit Posts
+        async function fetchRedditPosts() {
+            const loadingElement = document.getElementById('theories-loading');
+            const contentElement = document.getElementById('theories-content');
+            
+            try {
+                const response = await fetch('https://www.reddit.com/r/GTA6/hot.json?limit=15');
+                
+                if (!response.ok) throw new Error('Reddit API error');
+                
+                const data = await response.json();
+                loadingElement.style.display = 'none';
+                contentElement.innerHTML = '';
+                
+                data.data.children.forEach(post => {
+                    const postData = post.data;
+                    const theoryElement = document.createElement('div');
+                    theoryElement.className = 'news-item';
+                    theoryElement.innerHTML = `
+                        <div class="news-title">${postData.title}</div>
+                        <div class="news-meta">
+                            <span>r/GTA6</span>
+                            <span>•</span>
+                            <span>👍 ${postData.score}</span>
+                            <span>•</span>
+                            <span>💬 ${postData.num_comments}</span>
+                            <span>•</span>
+                            <span>u/${postData.author}</span>
+                        </div>
+                        <div class="news-content">
+                            ${postData.selftext ? postData.selftext.substring(0, 200) + '...' : 'Click to read full discussion'}
+                        </div>
+                        <a href="https://reddit.com${postData.permalink}" target="_blank" class="news-link">
+                            Join Discussion →
+                        </a>
+                    `;
+                    contentElement.appendChild(theoryElement);
+                });
+                
+                showNotification('🧠 Real Reddit discussions loaded!');
+                
+            } catch (error) {
+                console.log('Reddit API error:', error);
+                loadingElement.style.display = 'none';
+                showDemoTheoriesContent();
+            }
+        }
+
+        // Demo content functions
+        function showDemoYouTubeContent() {
+            const contentElement = document.getElementById('youtube-content');
+            contentElement.innerHTML = `
+                <div class="news-item">
+                    <div class="news-title">🚨 DEMO: GTA 6 Leaked Footage Analysis</div>
+                    <div class="news-meta">
+                        <span>Demo Channel</span>
+                        <span>•</span>
+                        <span>${new Date().toLocaleDateString()}</span>
+                    </div>
+                    <div class="news-content">This is demo content. Add your YouTube API key to see real videos!</div>
+                    <span class="news-link">🔧 Setup API Key First</span>
+                </div>
+            `;
+        }
+
+        function showDemoNewsContent() {
+            const contentElement = document.getElementById('news-content');
+            document.getElementById('newsCount').textContent = '15';
+            document.getElementById('sourcesCount').textContent = '8';
+            
+            contentElement.innerHTML = `
+                <div class="news-item">
+                    <div class="news-title">DEMO: GTA 6 Development Update</div>
+                    <div class="news-meta">
+                        <span>Demo Gaming News</span>
+                        <span>•</span>
+                        <span>${new Date().toLocaleDateString()}</span>
+                    </div>
+                    <div class="news-content">This is demo content. Add your News API key to see real articles!</div>
+                    <span class="news-link">🔧 Setup API Key First</span>
+                </div>
+            `;
+        }
+
+        function showDemoTheoriesContent() {
+            const contentElement = document.getElementById('theories-content');
+            contentElement.innerHTML = `
+                <div class="news-item">
+                    <div class="news-title">DEMO: Time Period Theory Discussion</div>
+                    <div class="news-meta">
+                        <span>r/GTA6</span>
+                        <span>•</span>
+                        <span>👍 247</span>
+                        <span>•</span>
+                        <span>💬 89</span>
+                    </div>
+                    <div class="news-content">This is demo content. Real Reddit discussions will appear here automatically!</div>
+                    <span class="news-link">🔧 Reddit loads automatically</span>
+                </div>
+            `;
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('gtafastlane-theme', currentTheme);
+            
+            const button = document.querySelector('.theme-toggle');
+            button.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+            }, 200);
+            
+            button.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+            showNotification(`Switched to ${currentTheme} mode!`);
+            addXP(5, 'Theme switched!');
+        }
+
+        function initializeTheme() {
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.querySelector('.theme-toggle').textContent = '☀️';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.querySelector('.theme-toggle').textContent = '🌙';
+            }
+        }
+
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date();
+            const distance = releaseDate - now;
+
+            if (distance < 0) {
+                document.querySelector('.countdown-container').innerHTML = 
+                    '<div style="text-align: center; width: 100%;"><h2>🎉 GTA 6 IS OUT! 🎉</h2></div>';
+                return;
+            }
+
+            const days = Math.ceil(distance / (1000 * 60 * 60 * 24));
+            document.getElementById('days').textContent = days;
+        }
+
+        // Tab switching
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(tabName).classList.add('active');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            activeTab = tabName;
+
+            if (tabName === 'youtube') fetchRealYouTubeVideos();
+            if (tabName === 'news') fetchRealNews();
+            if (tabName === 'theories') fetchRedditPosts();
+
+            addXP(2, `Explored ${tabName}`);
+        }
+
+        // XP System
+        function addXP(amount, reason = '') {
+            userXP += amount;
+            localStorage.setItem('gtafastlane-xp', userXP);
+            updateUserStatus();
+            
+            if (reason) {
+                showNotification(`+${amount} XP: ${reason}`);
+            }
+        }
+
+        function updateUserStatus() {
+            document.getElementById('userXP').textContent = userXP;
+            document.getElementById('userLevel').textContent = userLevel;
+            
+            const xpProgress = (userXP % 500) / 500 * 100;
+            document.getElementById('xpFill').style.width = xpProgress + '%';
+            
+            const newLevel = calculateLevel(userXP);
+            if (newLevel !== userLevel) {
+                levelUp(newLevel);
+            }
+        }
+
+        function calculateLevel(xp) {
+            if (xp >= 5000) return 'Legend';
+            if (xp >= 1500) return 'Expert';
+            if (xp >= 500) return 'Insider';
+            return 'Newbie';
+        }
+
+        function levelUp(newLevel) {
+            userLevel = newLevel;
+            localStorage.setItem('gtafastlane-level', userLevel);
+            showNotification(`🎉 Level Up! Welcome to ${newLevel} status!`);
+            triggerFloatingReaction('🎉', 5);
+        }
+
+        // Daily check-in
+        function claimDailyReward() {
+            const today = new Date().toDateString();
+            const checkin = document.getElementById('dailyCheckin');
+            
+            if (lastCheckin === today) {
+                showNotification('Already claimed today! Come back tomorrow.');
+                return;
+            }
+            
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            if (lastCheckin === yesterday.toDateString()) {
+                dailyStreak += 1;
+            } else if (lastCheckin !== null) {
+                dailyStreak = 1;
+            }
+            
+            const baseXP = 50;
+            const streakBonus = Math.min(dailyStreak * 5, 100);
+            const totalXP = baseXP + streakBonus;
+            
+            addXP(totalXP, `Daily check-in! ${dailyStreak} day streak!`);
+            
+            localStorage.setItem('gtafastlane-last-checkin', today);
+            localStorage.setItem('gtafastlane-streak', dailyStreak);
+            
+            checkin.classList.add('claimed');
+            checkin.innerHTML = `
+                <div class="streak-counter">✅ ${dailyStreak}</div>
+                <h3>Reward Claimed!</h3>
+                <p>Come back tomorrow for your next reward!</p>
+                <small>Earned ${totalXP} XP today</small>
+            `;
+            
+            triggerFloatingReaction('🎉', 3);
+        }
+
+        // Prediction system
+        function selectPrediction(element, prediction) {
+            document.querySelectorAll('.prediction-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedPrediction = prediction;
+        }
+
+        function submitPrediction() {
+            if (!selectedPrediction) {
+                showNotification('Please select a prediction first!');
+                return;
+            }
+            
+            addXP(25, 'Prediction submitted!');
+            showNotification('Prediction recorded! Results revealed when official info drops.');
+            selectedPrediction = null;
+            
+            document.querySelectorAll('.prediction-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+        }
+
+        // Chat system
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            if (message.length > 200) {
+                showNotification('Message too long! Max 200 characters.');
+                return;
+            }
+            
+            const chatMessages = document.getElementById('chatMessages');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'chat-message';
+            messageElement.innerHTML = `
+                <div class="chat-username">You</div>
+                <div class="chat-text">${message}</div>
+            `;
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            input.value = '';
+            addXP(5, 'Message sent!');
+            
+            setTimeout(() => {
+                addRandomChatMessage();
+            }, 2000 + Math.random() * 3000);
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function addRandomChatMessage() {
+            const users = ['ViceCityFan', 'GTAExpert', 'TheoryHunter', 'FastLaneProud'];
+            const messages = [
+                'Great point! I totally agree! 👍',
+                'Has anyone seen the latest analysis?',
+                'The countdown is killing me! So hyped! 🔥',
+                'Vice City is going to be incredible!',
+                'This community is amazing! 🎉'
+            ];
+            
+            const chatMessages = document.getElementById('chatMessages');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'chat-message';
+            messageElement.innerHTML = `
+                <div class="chat-username">${users[Math.floor(Math.random() * users.length)]}</div>
+                <div class="chat-text">${messages[Math.floor(Math.random() * messages.length)]}</div>
+            `;
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Floating reactions
+        function triggerFloatingReaction(emoji, count = 1) {
+            const container = document.getElementById('floatingReactions');
+            
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const reaction = document.createElement('div');
+                    reaction.className = 'floating-reaction';
+                    reaction.textContent = emoji;
+                    reaction.style.left = Math.random() * window.innerWidth + 'px';
+                    reaction.style.top = Math.random() * window.innerHeight + 'px';
+                    
+                    container.appendChild(reaction);
+                    
+                    setTimeout(() => {
+                        reaction.remove();
+                    }, 3000);
+                }, i * 200);
+            }
+        }
+
+        function triggerCountdownReaction() {
+            const reactions = ['🎮', '🔥', '🚗', '🏎️', '⚡'];
+            const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
+            triggerFloatingReaction(randomReaction, 1);
+            addXP(1, 'Countdown interaction!');
+        }
+
+        // Notifications
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        // Social sharing
+        function shareWebsite() {
+            const shareData = {
+                title: 'GTAFastLane - Ultimate GTA 6 Countdown Hub!',
+                text: `Join the FastLane community! Only ${document.getElementById('days').textContent} days until GTA 6! 🏎️🔥`,
+                url: window.location.href
+            };
+
+            if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+                navigator.share(shareData);
+            } else {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(window.location.href);
+                    showNotification('🔗 FastLane link copied to clipboard!');
+                } else {
+                    showNotification('🔗 Share: ' + window.location.href);
+                }
+            }
+            addXP(10, 'Shared GTAFastLane!');
+        }
+
+        // Live stats simulation
+        function updateLiveStats() {
+            const now = new Date();
+            const hour = now.getHours();
+            
+            const baseUsers = 150;
+            const timeMultiplier = hour >= 18 && hour <= 23 ? 1.8 : (hour >= 9 && hour <= 17 ? 1.3 : 0.7);
+            const onlineUsers = Math.floor(baseUsers * timeMultiplier + Math.random() * 50);
+            
+            document.getElementById('onlineUsers').textContent = onlineUsers;
+            document.getElementById('chatOnlineCount').textContent = `${onlineUsers} online`;
+            document.getElementById('liveActivity').innerHTML = 
+                `🔴 LIVE: ${onlineUsers} fans online | ${Math.floor(Math.random() * 20) + 10} new theories today`;
+        }
+
+        // Initialization
+        function init() {
+            initializeTheme();
+            updateCountdown();
+            setInterval(updateCountdown, 3600000);
+            updateUserStatus();
+            updateLiveStats();
+            
+            fetchRealYouTubeVideos();
+            setTimeout(fetchRealNews, 1000);
+            setTimeout(fetchRedditPosts, 2000);
+            
+            setInterval(fetchRealYouTubeVideos, 300000);
+            setInterval(fetchRealNews, 600000);
+            setInterval(fetchRedditPosts, 180000);
+            setInterval(updateLiveStats, 60000);
+            setInterval(addRandomChatMessage, 15000);
+            
+            const today = new Date().toDateString();
+            if (lastCheckin === today) {
+                const checkin = document.getElementById('dailyCheckin');
+                checkin.classList.add('claimed');
+                checkin.innerHTML = `
+                    <div class="streak-counter">✅ ${dailyStreak}</div>
+                    <h3>Already Claimed!</h3>
+                    <p>Come back tomorrow for your next reward!</p>
+                    <small>Streak: ${dailyStreak} days</small>
+                `;
+            }
+            
+            const visits = parseInt(localStorage.getItem('gtafastlane-visits')) || 0;
+            localStorage.setItem('gtafastlane-visits', visits + 1);
+            
+            setTimeout(() => {
+                if (visits === 0) {
+                    showNotification('🎉 Welcome to GTAFastLane! Setup APIs for real data!');
+                } else {
+                    showNotification('🏎️ Welcome back to FastLane!');
+                }
+            }, 2000);
+        }
+
+        // Start when page loads
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Handle page visibility
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                updateLiveStats();
+            }
+        });
+
+        // Touch feedback for mobile
+        if ('ontouchstart' in window) {
+            document.querySelectorAll('.tab, .news-item, .prediction-option').forEach(el => {
+                el.addEventListener('touchstart', function() {
+                    this.style.opacity = '0.7';
+                });
+                el.addEventListener('touchend', function() {
+                    this.style.opacity = '1';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
