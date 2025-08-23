@@ -1137,17 +1137,17 @@
                 
                 showNotification('📰 Real news articles loaded!');
                 
-            } catch (error) {
-                console.log('News API error:', error);
-                loadingElement.style.display = 'none';
-                contentElement.innerHTML = `
-                    <div class="error-message">
-                        <strong>🔧 Setup Required:</strong> Add your News API key to see real articles!<br>
-                        <small>Get free API key at: <a href="https://newsapi.org/register" target="_blank">NewsAPI.org</a></small>
-                    </div>
-                `;
-                showDemoNewsContent();
-            }
+          } catch (error) {
+    console.log('News API error:', error);
+    loadingElement.style.display = 'none';
+    contentElement.innerHTML = `
+        <div class="error-message">
+            <strong>⚠️ News API Issue:</strong> ${error.message}<br>
+            <small>Your API key works, but there's a connection issue. Try refreshing!</small>
+        </div>
+    `;
+    showDemoNewsContent();
+}
         }
 
         // Fetch Real Reddit Posts
@@ -1614,6 +1614,7 @@
 </body>
 
 </html>
+
 
 
 
