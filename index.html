@@ -1099,6 +1099,7 @@
             const contentElement = document.getElementById('news-content');
             
             try {
+                console.log('Checking News API key:', API_CONFIG.news);
                 if (API_CONFIG.news === 'YOUR_NEWS_API_KEY_HERE') {
                     throw new Error('API key not configured');
                 }
@@ -1614,6 +1615,7 @@
 </body>
 
 </html>
+
 
 
 
